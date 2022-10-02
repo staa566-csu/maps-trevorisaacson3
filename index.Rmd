@@ -16,9 +16,7 @@ library(plotly)
 library(tigris)
 ```
 
-Data = https://www.kaggle.com/datasets/hemil26/mass-shootings-in-united-states-20182022?select=shootings_2018.csv
-
-
+The data used for this assignment details mass shootings for the past five years.  Each entry includes the date, state, number of people who died, number of people that were injured and a small description describing what happened.  The data is available on Kaggle at https://www.kaggle.com/datasets/hemil26/mass-shootings-in-united-states-20182022?select=shootings_2018.csv.  
 
 ```{r}
 states <- map_data("state")
