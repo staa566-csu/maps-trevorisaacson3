@@ -2,7 +2,7 @@
 title: "Maps"
 author: "Trevor Isaacson"
 date: "`r Sys.Date()`"
-output: html_document
+output: html_documents
 ---
 
 ```{r setup, include=FALSE}
@@ -10,15 +10,53 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(tidyverse)
 library(maps)
-
+library(viridis)
+library(ggdendro)
+library(plotly)
+library(tigris)
 ```
+
+Data = https://www.kaggle.com/datasets/hemil26/mass-shootings-in-united-states-20182022?select=shootings_2018.csv
+
+
 
 ```{r}
 states <- map_data("state")
-states
+states = states %>%
+  mutate(State = str_to_title(region))
+
+shootings2018 = read.csv("shootings_2018.csv")
+shootings2018 = shootings2018 %>% 
+  group_by(State) %>%
+  summarise(DeathTotal = sum(Dead))
+  
+stateShootings = states %>%
+  left_join(shootings2018, by = "State") %>%
+  select(-c(region, subregion))
+
+stateShootings
+```
+
+```{r}
+p_death2018 = ggplot(data = stateShootings, 
+       mapping = aes(x = long, y = lat, group = group, fill = DeathTotal,
+                     text = paste("Shooting Deaths in 2018: ", DeathTotal))) +
+  geom_polygon(color = "white") +
+  ggdendro::theme_dendro() +
+  scale_fill_viridis(option = "magma", direction = -1) + 
+  coord_map() +
+  guides(fill = guide_legend(title = "Deaths")) +
+  ggtitle("Mass Shootings in 2018")
+
+ggplotly(p_death2018, tooltip = "text")
 ```
 
 
+```{r}
+t_states <- tigris::states(cb = TRUE, resolution = '20m')
+
+
+```
 
 
 
