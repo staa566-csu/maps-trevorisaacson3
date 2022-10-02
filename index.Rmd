@@ -2,7 +2,7 @@
 title: "Maps"
 author: "Trevor Isaacson"
 date: "`r Sys.Date()`"
-output: html_documents
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -32,7 +32,7 @@ stateShootings = states %>%
   left_join(shootings2018, by = "State") %>%
   select(-c(region, subregion))
 
-stateShootings
+head(stateShootings)
 ```
 
 ```{r}
