@@ -57,26 +57,28 @@ p_death2018 = ggplot(data = stateShootings2018,
   scale_fill_viridis(option = "magma", direction = -1) + 
   coord_map() +
   guides(fill = guide_legend(title = "Deaths")) +
-  ggtitle("Mass Shootings in 2018")
+  ggtitle("Mass Shooting Deaths in 2018")
 
 ggplotly(p_death2018, tooltip = "text")
 ```
 
+In this first plot, I wanted to simply display the mass shooting deaths per state for the year 2018.  Using a simple choropleth map with the states defined by spatial polygons, 
+this plot clearly shows number of deaths per state and how each state compares to each other.  The tooltip function allows for the hover over effect and an actual death count.  However, multiple states either had missing data or no deaths leading to an incomplete look.  I like the simplicity and effectiveness of this plot.   
 
-```{r}
+```{r message = FALSE}
 t_states <- tigris::states(cb = TRUE, resolution = '20m')
+```
 
+```{r message = FALSE}
 stateShootingsTotal = t_states %>%
   left_join(shootingsTotal, by =  c("NAME" = "State"))
 ```
-
 
 ```{r}
 mapview::mapview(stateShootingsTotal, zcol = "DeathTotal")
 ```
 
-
-
+This second plot displays the deaths total from mass shootings for the years 2018-2022.  This plot includes each year and shows the death totals over that time period.  It also incorporates spatial files using the tigris package and the mapview package to display in a more interactive, full world type view.  The ability to start zoomed in on just the United States would have been nice but the zoom +- can be very useful.  This plot has less incomplete or missing data and gives a broader view of the past five years.  
 
 
 
